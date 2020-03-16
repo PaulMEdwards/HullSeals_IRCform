@@ -4,21 +4,34 @@
   </head>
   <body>
     <form action="irc.php" method="get">
-      Nickname: <input type="text" name="nick" class="nickname key-filter"> <input type="submit" class="submit">
+      Nickname: <input type="text" name="nick" class="nickname key-filter"> <input type="submit" class="submit"><br/>
+      <div class="error-message length" style="display: none;">Error: Nickname must be at least 2 characters!</div>
+      <div class="error-message start-number" style="display: none;">Error: Nickname cannot start with a number!</div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
       <script>
         $(document).ready(function() {
+          $('.error-message').hide();
           $('.submit').prop("disabled", true);
         });
         $('.nickname').keyup(function() {
-          if ($('.nickname').val().length < 2) {
+          let v = $('.nickname').val();
+          if (v.length < 2) {
             $('.submit').prop("disabled", true);
+            $('.error-message.length').show();
           } else {
-            $('.submit').prop("disabled", false);
+            $('.error-message.length').hide();
+            if (/\d/.test(v.slice(0,1))) {
+              $('.error-message.start-number').show();
+              $('.submit').prop("disabled", true);
+            } else {
+              $('.error-message.start-number').hide();
+              $('.submit').prop("disabled", false);
+            }
           }
         });
         $('.key-filter').keypress(function() {
-          if (event.key.replace(/[^\w\-\.\|\_\[\]]/g,'')=='') event.preventDefault();
+          const nickname_characters_regex = /[^\w\-\.\|\_\[\]]/g;
+          if (nickname_characters_regex.test(event.key)) event.preventDefault();
         });
       </script>
     </form>
