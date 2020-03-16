@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>IRC Form</title>
+  </head>
+  <body>
+    <form action="irc.php" method="get">
+      Nickname: <input type="text" name="nick" class="nickname key-filter"> <input type="submit" class="submit">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script>
+        $(document).ready(function() {
+          $('.submit').prop("disabled", true);
+        });
+        $('.nickname').keyup(function() {
+          if ($('.nickname').val().length < 2) {
+            $('.submit').prop("disabled", true);
+          } else {
+            $('.submit').prop("disabled", false);
+          }
+        });
+        $('.key-filter').keypress(function() {
+          if (event.key.replace(/[^\w\-\.\|\_\[\]]/g,'')=='') event.preventDefault();
+        });
+      </script>
+    </form>
+  </body>
+</html>
